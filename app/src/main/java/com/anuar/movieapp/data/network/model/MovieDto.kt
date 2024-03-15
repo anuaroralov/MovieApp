@@ -1,4 +1,4 @@
-package com.anuar.movieapp.data.network
+package com.anuar.movieapp.data.network.model
 
 import com.google.gson.annotations.SerializedName
 

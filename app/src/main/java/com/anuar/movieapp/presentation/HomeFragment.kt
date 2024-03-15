@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.anuar.movieapp.data.network.ApiFactory.apiService
-import com.anuar.movieapp.data.network.ListOfMovies
+import com.anuar.movieapp.data.network.model.ListOfMovies
 import com.anuar.movieapp.databinding.FragmentHomeBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

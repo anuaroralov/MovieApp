@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.anuar.movieapp.data.network.MovieDto
+import com.anuar.movieapp.data.network.model.MovieDto
 import com.anuar.movieapp.databinding.ItemMovieBinding
 import com.squareup.picasso.Picasso
 
@@ -29,6 +29,7 @@ class MovieAdapter() : ListAdapter<MovieDto, MovieAdapter.MovieViewHolder>(CoinI
         with(holder.binding) {
             with(movie) {
                 textView.text =title
+
                 textView2.text=vote_average.toString()
 
                 Picasso.get().load(BASE_URL+poster_path).into(imageView)
