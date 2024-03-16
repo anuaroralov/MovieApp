@@ -1,25 +1,28 @@
-package com.anuar.movieapp.presentation
+package com.anuar.movieapp.presentation.Fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.anuar.movieapp.data.network.ApiFactory.apiService
-import com.anuar.movieapp.data.network.model.ListOfMovies
 import com.anuar.movieapp.databinding.FragmentHomeBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.anuar.movieapp.presentation.MovieAdapter
+import com.anuar.movieapp.presentation.MyViewModel
 
 
-private var _binding: FragmentHomeBinding? = null
-private val binding: FragmentHomeBinding
-    get() = _binding ?: throw RuntimeException("FragmentHomeBinding is null")
-
-private lateinit var adapter: MovieAdapter
 class HomeFragment : Fragment() {
+
+    private var _binding: FragmentHomeBinding? = null
+    private val binding: FragmentHomeBinding
+        get() = _binding ?: throw RuntimeException("FragmentHomeBinding is null")
+
+    private lateinit var adapter: MovieAdapter
+
+    private val viewModel by lazy{
+        ViewModelProvider(this)[MyViewModel::class.java]
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,12 +45,11 @@ class HomeFragment : Fragment() {
         adapter = MovieAdapter()
         binding.recyclerView.layoutManager = LinearLayoutManager(activity,LinearLayoutManager.HORIZONTAL,false)
         binding.recyclerView.adapter = adapter
-        CoroutineScope(Dispatchers.IO).launch {
-            val movieList: ListOfMovies =apiService.moviesList()
-            activity?.runOnUiThread {
-                adapter.submitList(movieList.results)
-            }
-            }
+
+        viewModel.movieList.observe(viewLifecycleOwner){
+            adapter.submitList(it)
+        }
+
 
         }
 
