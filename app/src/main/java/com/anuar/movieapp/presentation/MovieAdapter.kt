@@ -9,7 +9,7 @@ import com.anuar.movieapp.databinding.ItemMovieBinding
 import com.anuar.movieapp.domain.Movie
 import com.squareup.picasso.Picasso
 
-class MovieAdapter() : ListAdapter<Movie, MovieAdapter.MovieViewHolder>(CoinInfoDiffCallback) {
+class MovieAdapter(private val onClickListener:(Movie)->Unit) : ListAdapter<Movie, MovieAdapter.MovieViewHolder>(CoinInfoDiffCallback) {
 
     class MovieViewHolder(
         val binding: ItemMovieBinding
@@ -32,7 +32,11 @@ class MovieAdapter() : ListAdapter<Movie, MovieAdapter.MovieViewHolder>(CoinInfo
 
                 textView2.text=voteAverage.toString()
 
-                Picasso.get().load(BASE_URL+posterPath).into(imageView)
+                Picasso.get().load(posterPath).into(imageView)
+
+                root.setOnClickListener{
+                    onClickListener(movie)
+                }
             }
         }
     }

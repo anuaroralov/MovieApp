@@ -6,9 +6,9 @@
         android:title="Home" />
 
     <item
-        android:id="@id/searchFragment"
-        android:icon="@drawable/search"
-        android:title="Search" />
+        android:id="@id/favouritesFragment"
+        android:icon="@drawable/favourite"
+        android:title="Favourites" />
 
     <item
         android:id="@id/accountFragment"

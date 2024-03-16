@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.anuar.movieapp.R
 
-class SearchFragment : Fragment() {
+class FavouritesFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,6 +17,6 @@ class SearchFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_search, container, false)
+        return inflater.inflate(R.layout.fragment_favourites, container, false)
     }
 }
