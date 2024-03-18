@@ -10,7 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.anuar.movieapp.databinding.FragmentHomeBinding
 import com.anuar.movieapp.domain.Movie
-import com.anuar.movieapp.presentation.MovieAdapter
+import com.anuar.movieapp.presentation.MovieCategoryAdapter
 import com.anuar.movieapp.presentation.MyViewModel
 
 
@@ -20,7 +20,7 @@ class HomeFragment : Fragment() {
     private val binding: FragmentHomeBinding
         get() = _binding ?: throw RuntimeException("FragmentHomeBinding is null")
 
-    private lateinit var adapter: MovieAdapter
+    private lateinit var adapter: MovieCategoryAdapter
 
     private val viewModel by lazy{
         ViewModelProvider(this)[MyViewModel::class.java]
@@ -44,16 +44,28 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = MovieAdapter(){launchDetailFragment(it)}
-        binding.recyclerView.layoutManager = LinearLayoutManager(activity,LinearLayoutManager.HORIZONTAL,false)
+//        adapter = MovieAdapter(){launchDetailFragment(it)}
+//        binding.recyclerView.layoutManager = LinearLayoutManager(activity,LinearLayoutManager.HORIZONTAL,false)
+//        binding.recyclerView.adapter = adapter
+//
+//        viewModel.movieList.observe(viewLifecycleOwner){
+//            adapter.submitList(it)
+//        }
+
+
+        adapter = MovieCategoryAdapter() {movie ->
+            launchDetailFragment(movie)
+        }
+
+        binding.recyclerView.layoutManager = LinearLayoutManager(activity)
         binding.recyclerView.adapter = adapter
 
-        viewModel.movieList.observe(viewLifecycleOwner){
+        viewModel.movieCategoriesList.observe(viewLifecycleOwner){
             adapter.submitList(it)
         }
 
+    }
 
-        }
 
     private fun launchDetailFragment(movie: Movie) {
         findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToDetailFragment(movie))

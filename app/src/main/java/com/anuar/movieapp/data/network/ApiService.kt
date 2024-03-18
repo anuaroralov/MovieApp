@@ -16,5 +16,6 @@ interface ApiService {
     @GET("list/{list_id}")
     suspend fun moviesList(
         @Path("list_id") listId: Int,
+        @Query("page") page: Int,
     ): ListOfMovies
 }

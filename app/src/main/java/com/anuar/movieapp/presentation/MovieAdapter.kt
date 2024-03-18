@@ -9,7 +9,7 @@ import com.anuar.movieapp.databinding.ItemMovieBinding
 import com.anuar.movieapp.domain.Movie
 import com.squareup.picasso.Picasso
 
-class MovieAdapter(private val onClickListener:(Movie)->Unit) : ListAdapter<Movie, MovieAdapter.MovieViewHolder>(CoinInfoDiffCallback) {
+class MovieAdapter(private val onClickListener:(Movie)->Unit) : ListAdapter<Movie, MovieAdapter.MovieViewHolder>(MovieDiffCallback) {
 
     class MovieViewHolder(
         val binding: ItemMovieBinding
@@ -41,7 +41,7 @@ class MovieAdapter(private val onClickListener:(Movie)->Unit) : ListAdapter<Movi
         }
     }
 
-    object CoinInfoDiffCallback : DiffUtil.ItemCallback<Movie>() {
+    object MovieDiffCallback : DiffUtil.ItemCallback<Movie>() {
 
         override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
             return oldItem.id == newItem.id

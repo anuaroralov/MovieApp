@@ -19,6 +19,7 @@ internal fun ListOfMovies.mapToEntity() = MovieCategory(
     categoryName = this.name,
     movies = this.items.map { movieDto ->
         movieDto.mapToEntity()
-    }
+    },
+    totalPages=totalPages
 )
 

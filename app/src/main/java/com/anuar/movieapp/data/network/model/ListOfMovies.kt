@@ -11,5 +11,6 @@ data class ListOfMovies(
     @SerializedName("item_count"     ) var itemCount     : Int?             = null,
     @SerializedName("iso_639_1"      ) var iso6391       : String?          = null,
     @SerializedName("name"           ) var name          : String?          = null,
-    @SerializedName("poster_path"    ) var posterPath    : String?          = null
+    @SerializedName("poster_path"    ) var posterPath    : String?          = null,
+    @SerializedName("total_pages"    ) var totalPages    : Int?             = null
 )
