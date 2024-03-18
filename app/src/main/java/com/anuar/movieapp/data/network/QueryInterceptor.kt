@@ -12,9 +12,10 @@ class QueryInterceptor(private val args: HashMap<String, String>) : Interceptor 
             args.forEach { (key, value) -> addQueryParameter(key, value) }
         }.build()
 
-        return chain.proceed(originalRequest.newBuilder()
-            .url(url)
-            .build()
+        return chain.proceed(
+            originalRequest.newBuilder()
+                .url(url)
+                .build()
         )
     }
 }

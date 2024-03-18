@@ -2,5 +2,5 @@ package com.anuar.movieapp.domain
 
 interface Repository {
 
-    suspend fun getMovieList(): List<Movie>
+    suspend fun getMovieCategoryList(): List<MovieCategory>
 }

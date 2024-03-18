@@ -51,8 +51,5 @@ class MovieAdapter(private val onClickListener:(Movie)->Unit) : ListAdapter<Movi
             return oldItem == newItem
         }
     }
-    companion object{
-        private val BASE_URL = "https://image.tmdb.org/t/p/w500/"
-    }
 }
 
