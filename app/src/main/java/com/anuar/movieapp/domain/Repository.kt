@@ -1,8 +1,9 @@
 package com.anuar.movieapp.domain
 
+import androidx.lifecycle.LiveData
+
 interface Repository {
 
-    suspend fun getMovieCategoryList(): List<MovieCategory>
+    fun getMovieCategoryList(): LiveData<List<MovieCategory>>
 
-    suspend fun getMovieList(listId:Int,page:Int):List<Movie>
 }

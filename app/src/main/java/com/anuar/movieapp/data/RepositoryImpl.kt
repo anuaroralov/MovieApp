@@ -1,47 +1,37 @@
 package com.anuar.movieapp.data
 
-import com.anuar.movieapp.data.network.ApiFactory
-import com.anuar.movieapp.domain.Movie
+import android.app.Application
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.map
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.WorkManager
+import com.anuar.movieapp.data.database.AppDatabase
+import com.anuar.movieapp.data.database.MovieCategoryWithMovies
 import com.anuar.movieapp.domain.MovieCategory
 import com.anuar.movieapp.domain.Repository
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
 
-class RepositoryImpl() : Repository {
+class RepositoryImpl(private val application: Application) : Repository {
 
-    private val apiService = ApiFactory.apiService
+    private val dao = AppDatabase.getInstance(application).moviesDao()
 
-    override suspend fun getMovieCategoryList(): List<MovieCategory> {
-        val listIds = (1..50).toList()
-
-        val movieCategories = coroutineScope {
-            listIds.mapNotNull { listId ->
-                async {
-                    try {
-                        apiService.moviesList(listId,1)
-                    } catch (e: Exception) {
-                        null
-                    }
+    override fun getMovieCategoryList(): LiveData<List<MovieCategory>> {
+        return dao.getMovieCategoriesWithMovies().map {
+            it.map { mcwm: MovieCategoryWithMovies ->
+                mcwm.category.toEntity().apply {
+                    movies = mcwm.movies.map { it.toEntity() }
                 }
-            }.awaitAll().filterNotNull().filter { listOfMovies ->
-                listOfMovies.items.isNotEmpty()
-            }.map { listOfMovies ->
-                listOfMovies.mapToEntity()
             }
-        }
-        return movieCategories
-    }
-
-    override suspend fun getMovieList(listId:Int,page:Int):List<Movie>{
-        return try {
-            apiService.moviesList(listId,page).items.map { movieDto ->
-                movieDto.mapToEntity()
-            }
-        } catch (e: Exception) {
-            throw e
         }
     }
 
+    fun loadData() {
+        val workManager = WorkManager.getInstance(application)
+        workManager.enqueueUniquePeriodicWork(
+            RefreshDataWorker.NAME,
+            ExistingPeriodicWorkPolicy.UPDATE,
+            RefreshDataWorker.makeRequest()
+        )
+
+    }
 
 }

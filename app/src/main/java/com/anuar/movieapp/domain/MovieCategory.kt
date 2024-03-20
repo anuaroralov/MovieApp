@@ -5,9 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class MovieCategory(
-    val id: Int?,
+    val id: Int,
     val categoryName: String?,
-    val movies: List<Movie> = mutableListOf(),
-    var currentPage: Int = 1,
-    var totalPages:Int?
+    var movies: List<Movie> = mutableListOf(),
 ) : Parcelable
