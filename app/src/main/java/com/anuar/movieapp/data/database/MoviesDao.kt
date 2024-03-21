@@ -12,13 +12,27 @@ import androidx.room.Transaction
 interface MoviesDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertMovieCategory(category: MovieCategoryDbModel)
+    fun insertMovieCategories(categories: List<MovieCategoryDbModel>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertMovies(movies: List<MovieDbModel>)
 
     @Transaction
+    fun updateDatabase(movieCategories: List<MovieCategoryDbModel>, movies: List<MovieDbModel>) {
+        insertMovieCategories(movieCategories)
+        insertMovies(movies)
+    }
+
+    @Query("DELETE FROM movie_categories")
+    fun clearMovieCategoriesTable()
+
+    @Query("DELETE FROM movies")
+    fun clearMoviesTable()
+
+
+    @Transaction
     @Query("SELECT * FROM movie_categories")
     fun getMovieCategoriesWithMovies(): LiveData<List<MovieCategoryWithMovies>>
+
 
 }

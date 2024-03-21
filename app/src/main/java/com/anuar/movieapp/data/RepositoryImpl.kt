@@ -24,14 +24,13 @@ class RepositoryImpl(private val application: Application) : Repository {
         }
     }
 
-    fun loadData() {
+    override fun loadData() {
         val workManager = WorkManager.getInstance(application)
         workManager.enqueueUniquePeriodicWork(
             RefreshDataWorker.NAME,
             ExistingPeriodicWorkPolicy.UPDATE,
             RefreshDataWorker.makeRequest()
         )
-
     }
 
 }

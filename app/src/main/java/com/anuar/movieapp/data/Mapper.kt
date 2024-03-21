@@ -10,21 +10,21 @@ import com.anuar.movieapp.domain.MovieCategory
 
 private const val BASE_URL = "https://image.tmdb.org/t/p/w500/"
 
-//internal fun MovieDto.mapToEntity() = Movie(
-//    id = this.id?:-1,
-//    overview = this.overview,
-//    posterPath = BASE_URL + this.posterPath,
-//    title = this.title,
-//    voteAverage = String.format("%.2f", this.voteAverage)
-//)
-//
-//internal fun ListOfMovies.mapToEntity() = MovieCategory(
-//    id = this.id?:-1,
-//    categoryName = this.name,
-//    movies = this.items.map { movieDto ->
-//        movieDto.mapToEntity()
-//    },
-//)
+internal fun MovieDto.mapToEntity() = Movie(
+    id = this.id ?: -1,
+    overview = this.overview,
+    posterPath = BASE_URL + this.posterPath,
+    title = this.title,
+    voteAverage = String.format("%.2f", this.voteAverage)
+)
+
+internal fun ListOfMovies.mapToEntity() = MovieCategory(
+    id = this.id ?: -1,
+    categoryName = this.name,
+    movies = this.items.map { movieDto ->
+        movieDto.mapToEntity()
+    },
+)
 
 internal fun MovieDto.mapToDbModel(categoryId: Int): MovieDbModel {
     return MovieDbModel(

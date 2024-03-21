@@ -22,7 +22,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var adapter: MovieCategoryAdapter
 
-    private val viewModel by lazy{
+    private val viewModel by lazy {
         ViewModelProvider(this)[MyViewModel::class.java]
     }
 
@@ -44,23 +44,14 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        adapter = MovieAdapter(){launchDetailFragment(it)}
-//        binding.recyclerView.layoutManager = LinearLayoutManager(activity,LinearLayoutManager.HORIZONTAL,false)
-//        binding.recyclerView.adapter = adapter
-//
-//        viewModel.movieList.observe(viewLifecycleOwner){
-//            adapter.submitList(it)
-//        }
-
-
-        adapter = MovieCategoryAdapter() {movie ->
+        adapter = MovieCategoryAdapter() { movie ->
             launchDetailFragment(movie)
         }
 
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
         binding.recyclerView.adapter = adapter
 
-        viewModel.movieCategoriesList.observe(viewLifecycleOwner){
+        viewModel.movieCategoriesList.observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
 

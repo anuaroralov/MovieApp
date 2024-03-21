@@ -5,11 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.anuar.movieapp.R
 import com.anuar.movieapp.databinding.ItemMovieBinding
 import com.anuar.movieapp.domain.Movie
 import com.squareup.picasso.Picasso
 
-class MovieAdapter(private val onClickListener:(Movie)->Unit) : ListAdapter<Movie, MovieAdapter.MovieViewHolder>(MovieDiffCallback) {
+class MovieAdapter(private val onClickListener: (Movie) -> Unit) :
+    ListAdapter<Movie, MovieAdapter.MovieViewHolder>(MovieDiffCallback) {
 
     class MovieViewHolder(
         val binding: ItemMovieBinding
@@ -28,13 +30,16 @@ class MovieAdapter(private val onClickListener:(Movie)->Unit) : ListAdapter<Movi
         val movie = getItem(position)
         with(holder.binding) {
             with(movie) {
-                textView.text =title
+                textView.text = title
 
-                textView2.text=voteAverage.toString()
+                textView2.text = voteAverage.toString()
 
-                Picasso.get().load(posterPath).into(imageView)
+                Picasso.get()
+                    .load(posterPath)
+                    .placeholder(R.drawable.default_image)
+                    .into(imageView)
 
-                root.setOnClickListener{
+                root.setOnClickListener {
                     onClickListener(movie)
                 }
             }
