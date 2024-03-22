@@ -1,5 +1,7 @@
 package com.anuar.movieapp.domain
 
-class GetMovieCategoryListUseCase(private val repository: Repository) {
+import javax.inject.Inject
+
+class GetMovieCategoryListUseCase @Inject constructor(private val repository: Repository) {
     operator fun invoke() = repository.getMovieCategoryList()
 }

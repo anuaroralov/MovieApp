@@ -5,14 +5,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.WorkManager
-import com.anuar.movieapp.data.database.AppDatabase
 import com.anuar.movieapp.data.database.MovieCategoryWithMovies
+import com.anuar.movieapp.data.database.MoviesDao
+import com.anuar.movieapp.data.worker.RefreshDataWorker
 import com.anuar.movieapp.domain.MovieCategory
 import com.anuar.movieapp.domain.Repository
+import javax.inject.Inject
 
-class RepositoryImpl(private val application: Application) : Repository {
-
-    private val dao = AppDatabase.getInstance(application).moviesDao()
+class RepositoryImpl @Inject constructor(
+    private val dao: MoviesDao,
+    private val application: Application
+) : Repository {
 
     override fun getMovieCategoryList(): LiveData<List<MovieCategory>> {
         return dao.getMovieCategoriesWithMovies().map {

@@ -1,5 +1,6 @@
 package com.anuar.movieapp.presentation.Fragments
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,7 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.anuar.movieapp.databinding.FragmentHomeBinding
 import com.anuar.movieapp.domain.Movie
 import com.anuar.movieapp.presentation.MovieCategoryAdapter
+import com.anuar.movieapp.presentation.MyApplication
 import com.anuar.movieapp.presentation.MyViewModel
+import com.anuar.movieapp.presentation.MyViewModelFactory
+import javax.inject.Inject
 
 
 class HomeFragment : Fragment() {
@@ -22,10 +26,19 @@ class HomeFragment : Fragment() {
 
     private lateinit var adapter: MovieCategoryAdapter
 
-    private val viewModel by lazy {
-        ViewModelProvider(this)[MyViewModel::class.java]
+    @Inject
+    lateinit var viewModelFactory: MyViewModelFactory
+
+    private lateinit var viewModel:MyViewModel
+
+    private val component by lazy {
+        (requireActivity().application as MyApplication).component
     }
 
+    override fun onAttach(context: Context) {
+        component.inject(this)
+        super.onAttach(context)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +56,8 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel=ViewModelProvider(this,viewModelFactory)[MyViewModel::class.java]
 
         adapter = MovieCategoryAdapter() { movie ->
             launchDetailFragment(movie)

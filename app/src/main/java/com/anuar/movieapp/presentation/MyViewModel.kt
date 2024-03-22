@@ -1,20 +1,15 @@
 package com.anuar.movieapp.presentation
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import com.anuar.movieapp.data.RepositoryImpl
+import androidx.lifecycle.ViewModel
 import com.anuar.movieapp.domain.GetMovieCategoryListUseCase
 import com.anuar.movieapp.domain.LoadDataUseCase
+import javax.inject.Inject
 
-class MyViewModel(application: Application) : AndroidViewModel(application) {
-
-    private val repository = RepositoryImpl(application)
-
-    private val getMovieCategoryListUseCase = GetMovieCategoryListUseCase(repository)
-    private val loadDataUseCase = LoadDataUseCase(repository)
-
-    private val networkState = NetworkLiveData(application.applicationContext)
-
+class MyViewModel @Inject constructor(
+    private val getMovieCategoryListUseCase: GetMovieCategoryListUseCase,
+    private val loadDataUseCase: LoadDataUseCase,
+    private val networkState: NetworkLiveData
+) : ViewModel() {
 
     val movieCategoriesList = getMovieCategoryListUseCase()
 
