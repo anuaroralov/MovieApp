@@ -6,4 +6,6 @@ interface Repository {
 
     fun getMovieCategoryList(): LiveData<List<MovieCategory>>
 
+    fun loadData()
+
 }

@@ -46,7 +46,10 @@ class MovieCategoryAdapter(private val onClickListener: (Movie) -> Unit) :
             override fun areItemsTheSame(oldItem: MovieCategory, newItem: MovieCategory): Boolean =
                 oldItem.id == newItem.id
 
-            override fun areContentsTheSame(oldItem: MovieCategory, newItem: MovieCategory): Boolean =
+            override fun areContentsTheSame(
+                oldItem: MovieCategory,
+                newItem: MovieCategory
+            ): Boolean =
                 oldItem == newItem
         }
     }
