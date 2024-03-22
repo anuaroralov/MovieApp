@@ -1,29 +1,31 @@
-package com.anuar.movieapp.data
+package com.anuar.movieapp.data.worker
 
 import android.content.Context
 import androidx.work.CoroutineWorker
+import androidx.work.ListenableWorker
 import androidx.work.PeriodicWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkerParameters
-import com.anuar.movieapp.data.database.AppDatabase
 import com.anuar.movieapp.data.database.MovieCategoryDbModel
 import com.anuar.movieapp.data.database.MovieDbModel
-import com.anuar.movieapp.data.network.ApiFactory
+import com.anuar.movieapp.data.database.MoviesDao
+import com.anuar.movieapp.data.mapToDbModel
+import com.anuar.movieapp.data.network.ApiService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 
 class RefreshDataWorker(
     context: Context,
-    workerParameters: WorkerParameters
+    workerParameters: WorkerParameters,
+    private val dao: MoviesDao,
+    private val apiService: ApiService
 ) : CoroutineWorker(context, workerParameters) {
-
-    private val dao = AppDatabase.getInstance(context).moviesDao()
-    private val apiService = ApiFactory.apiService
 
     override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
         try {
@@ -71,5 +73,17 @@ class RefreshDataWorker(
 
         fun makeRequest(): PeriodicWorkRequest =
             PeriodicWorkRequestBuilder<RefreshDataWorker>(2, TimeUnit.HOURS).build()
+    }
+
+    class Factory @Inject constructor(
+        private val dao: MoviesDao,
+        private val apiService: ApiService
+    ):RefreshDataWorkerFactory {
+        override fun create(
+            context: Context,
+            workerParameters: WorkerParameters
+        ): ListenableWorker {
+            return RefreshDataWorker(context,workerParameters,dao,apiService)
+        }
     }
 }
