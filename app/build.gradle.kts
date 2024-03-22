@@ -65,6 +65,9 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
+
 
     implementation("com.squareup.retrofit2:retrofit:2.10.0")
     implementation("com.squareup.retrofit2:converter-gson:2.10.0")
@@ -83,6 +86,8 @@ dependencies {
 
     implementation ("androidx.paging:paging-runtime:3.2.1")
     implementation ("androidx.paging:paging-common-ktx:3.2.1")
+
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
 
 

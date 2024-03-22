@@ -15,7 +15,7 @@ internal fun MovieDto.mapToEntity() = Movie(
     overview = this.overview,
     posterPath = BASE_URL + this.posterPath,
     title = this.title,
-    voteAverage = String.format("%.2f", this.voteAverage)
+    voteAverage = Math.round(this.voteAverage?.times(100.0) ?: 0.0) / 100.0
 )
 
 internal fun ListOfMovies.mapToEntity() = MovieCategory(
@@ -55,7 +55,7 @@ internal fun MovieDbModel.toEntity(): Movie = Movie(
     overview = this.overview,
     posterPath = this.posterPath,
     title = this.title,
-    voteAverage = String.format("%.2f", this.voteAverage)
+    voteAverage = Math.round(this.voteAverage?.times(100.0) ?: 0.0) / 100.0
 )
 
 internal fun MovieCategoryDbModel.toEntity(): MovieCategory = MovieCategory(

@@ -31,7 +31,8 @@ class RefreshDataWorker(
         try {
 //            dao.clearMovieCategoriesTable()
 //            dao.clearMoviesTable()
-            val listIds = (200..210).toList()
+
+            val listIds = (1..50).toList()
             val allMovieCategories = mutableListOf<MovieCategoryDbModel>()
             val allMoviesWithCategoryIds = mutableListOf<MovieDbModel>()
 

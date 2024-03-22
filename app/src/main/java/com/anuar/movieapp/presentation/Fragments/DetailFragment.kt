@@ -56,7 +56,7 @@ class DetailFragment : Fragment() {
             Picasso.get().load(movie.posterPath).into(moviePoster)
             movieOverview.text=movie.overview
             movieTitle.text=movie.title
-            movieVoteAverage.text=movie.voteAverage
+            movieVoteAverage.text=movie.voteAverage.toString()
 
         }
     }

@@ -8,4 +8,6 @@ interface Repository {
 
     fun loadData()
 
+    suspend fun refreshData(): Boolean
+
 }

@@ -29,7 +29,7 @@ class HomeFragment : Fragment() {
     @Inject
     lateinit var viewModelFactory: MyViewModelFactory
 
-    private lateinit var viewModel:MyViewModel
+    private lateinit var viewModel: MyViewModel
 
     private val component by lazy {
         (requireActivity().application as MyApplication).component
@@ -57,10 +57,18 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel=ViewModelProvider(this,viewModelFactory)[MyViewModel::class.java]
+        viewModel = ViewModelProvider(this, viewModelFactory)[MyViewModel::class.java]
 
         adapter = MovieCategoryAdapter() { movie ->
             launchDetailFragment(movie)
+        }
+
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            viewModel.refreshData()
+        }
+
+        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            binding.swipeRefreshLayout.isRefreshing = isLoading
         }
 
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)

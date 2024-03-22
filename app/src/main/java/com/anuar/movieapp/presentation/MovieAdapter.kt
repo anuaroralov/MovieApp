@@ -31,8 +31,7 @@ class MovieAdapter(private val onClickListener: (Movie) -> Unit) :
         with(holder.binding) {
             with(movie) {
                 textView.text = title
-
-                textView2.text = voteAverage.toString()
+                textView2.text =voteAverage.toString()
 
                 Picasso.get()
                     .load(posterPath)
