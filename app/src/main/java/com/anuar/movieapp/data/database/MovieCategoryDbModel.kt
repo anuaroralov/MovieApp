@@ -9,5 +9,5 @@ import kotlinx.parcelize.Parcelize
 @Entity(tableName = "movie_categories")
 data class MovieCategoryDbModel(
     @PrimaryKey val id: Int,
-    val categoryName: String,
+    val categoryName: String?,
 ) : Parcelable

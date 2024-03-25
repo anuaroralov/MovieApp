@@ -10,30 +10,15 @@ import com.anuar.movieapp.domain.MovieCategory
 
 private const val BASE_URL = "https://image.tmdb.org/t/p/w500/"
 
-internal fun MovieDto.mapToEntity() = Movie(
-    id = this.id ?: -1,
-    overview = this.overview,
-    posterPath = BASE_URL + this.posterPath,
-    title = this.title,
-    voteAverage = Math.round(this.voteAverage?.times(100.0) ?: 0.0) / 100.0
-)
-
-internal fun ListOfMovies.mapToEntity() = MovieCategory(
-    id = this.id ?: -1,
-    categoryName = this.name,
-    movies = this.items.map { movieDto ->
-        movieDto.mapToEntity()
-    },
-)
-
 internal fun MovieDto.mapToDbModel(categoryId: Int): MovieDbModel {
     return MovieDbModel(
         id = this.id ?: -1,
         categoryId = categoryId,
-        title = this.title ?: "Нет названия",
-        overview = this.overview ?: "Нет описания",
-        posterPath = BASE_URL + (this.posterPath ?: "Нет картинки"),
-        voteAverage = this.voteAverage ?: 0.0
+        title = this.title,
+        overview = this.overview ,
+        posterPath = BASE_URL + (this.posterPath),
+        voteAverage = this.voteAverage,
+        favourite = false
     )
 }
 
@@ -42,7 +27,7 @@ internal fun ListOfMovies.mapToDbModel(): MovieCategoryWithMovies {
     return MovieCategoryWithMovies(
         category = MovieCategoryDbModel(
             id = categoryId,
-            categoryName = this.name ?: "Без названия"
+            categoryName = this.name
         ),
         movies = this.items.map { movieDto ->
             movieDto.mapToDbModel(categoryId)
@@ -55,7 +40,8 @@ internal fun MovieDbModel.toEntity(): Movie = Movie(
     overview = this.overview,
     posterPath = this.posterPath,
     title = this.title,
-    voteAverage = Math.round(this.voteAverage?.times(100.0) ?: 0.0) / 100.0
+    voteAverage = Math.round(this.voteAverage?.times(100.0) ?: 0.0) / 100.0,
+    favourite=this.favourite
 )
 
 internal fun MovieCategoryDbModel.toEntity(): MovieCategory = MovieCategory(

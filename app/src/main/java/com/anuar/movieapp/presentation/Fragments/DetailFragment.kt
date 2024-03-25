@@ -8,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
+import com.anuar.movieapp.R
 import com.anuar.movieapp.databinding.FragmentDetailBinding
+import com.anuar.movieapp.domain.Movie
 import com.anuar.movieapp.presentation.MyApplication
 import com.anuar.movieapp.presentation.MyViewModel
 import com.anuar.movieapp.presentation.MyViewModelFactory
@@ -26,7 +28,7 @@ class DetailFragment : Fragment() {
     @Inject
     lateinit var viewModelFactory: MyViewModelFactory
 
-    private lateinit var viewModel:MyViewModel
+    private lateinit var viewModel: MyViewModel
 
     private val component by lazy {
         (requireActivity().application as MyApplication).component
@@ -47,17 +49,36 @@ class DetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this, viewModelFactory)[MyViewModel::class.java]
+        val movie = args.movie
 
-        val movie=args.movie
+        setupUI(movie)
+        setupFavouriteButton(movie)
+    }
 
-        viewModel=ViewModelProvider(this,viewModelFactory)[MyViewModel::class.java]
-
-        with(binding){
+    private fun setupUI(movie: Movie) {
+        with(binding) {
             Picasso.get().load(movie.posterPath).into(moviePoster)
-            movieOverview.text=movie.overview
-            movieTitle.text=movie.title
-            movieVoteAverage.text=movie.voteAverage.toString()
-
+            movieOverview.text = movie.overview
+            movieTitle.text = movie.title
+            movieVoteAverage.text = movie.voteAverage.toString()
         }
     }
+
+    private fun setupFavouriteButton(movie: Movie) {
+        val isLike: Boolean = movie.favourite
+        val favButton = binding.fav
+
+        val favDrawableRes = if (isLike) R.drawable.fav else R.drawable.non_fav
+        favButton.setBackgroundResource(favDrawableRes)
+
+        favButton.setOnClickListener {
+            viewModel.updateFavouriteStatus(movie.id)
+            val newFavDrawableRes = if (isLike) R.drawable.non_fav else R.drawable.fav
+            favButton.setBackgroundResource(newFavDrawableRes)
+        }
+    }
+
+
+
 }

@@ -29,10 +29,17 @@ interface MoviesDao {
     @Query("DELETE FROM movies")
     fun clearMoviesTable()
 
-
     @Transaction
     @Query("SELECT * FROM movie_categories")
     fun getMovieCategoriesWithMovies(): LiveData<List<MovieCategoryWithMovies>>
 
+    @Query("SELECT * FROM movies WHERE favourite = 1")
+    fun getFavoriteMovies(): LiveData<List<MovieDbModel>>
+
+    @Query("UPDATE movies SET favourite = CASE WHEN favourite = 0 THEN 1 ELSE 0 END WHERE id = :id")
+    fun updateFavouriteStatus(id: Int)
+
+    @Query("SELECT id FROM movies WHERE favourite = 1")
+    fun getFavoriteMovieIds(): List<Int>
 
 }

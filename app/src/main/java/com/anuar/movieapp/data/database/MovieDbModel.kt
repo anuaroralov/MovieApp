@@ -26,5 +26,6 @@ data class MovieDbModel(
     val overview: String?,
     val posterPath: String?,
     val title: String?,
-    val voteAverage: Double?
+    val voteAverage: Double?,
+    val favourite:Boolean
 ) : Parcelable

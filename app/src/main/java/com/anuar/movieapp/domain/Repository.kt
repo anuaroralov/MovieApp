@@ -10,4 +10,8 @@ interface Repository {
 
     suspend fun refreshData(): Boolean
 
+    fun getFavouriteMovieList():LiveData<List<Movie>>
+
+    suspend fun updateFavouriteStatus(id:Int)
+
 }

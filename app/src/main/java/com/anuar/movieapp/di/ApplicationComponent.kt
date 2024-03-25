@@ -2,6 +2,7 @@ package com.anuar.movieapp.di
 
 import android.app.Application
 import com.anuar.movieapp.presentation.Fragments.DetailFragment
+import com.anuar.movieapp.presentation.Fragments.FavouritesFragment
 import com.anuar.movieapp.presentation.Fragments.HomeFragment
 import com.anuar.movieapp.presentation.MyApplication
 import dagger.BindsInstance
@@ -15,6 +16,8 @@ interface ApplicationComponent {
     fun inject(fragment: HomeFragment)
 
     fun inject(fragment: DetailFragment)
+
+    fun inject(fragment: FavouritesFragment)
 
     fun inject(application: MyApplication)
 

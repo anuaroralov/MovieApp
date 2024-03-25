@@ -4,9 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.anuar.movieapp.domain.GetMovieCategoryListUseCase
-import com.anuar.movieapp.domain.LoadDataUseCase
-import com.anuar.movieapp.domain.RefreshDataUseCase
+import com.anuar.movieapp.domain.useCase.GetFavouriteMovieListUseCase
+import com.anuar.movieapp.domain.useCase.GetMovieCategoryListUseCase
+import com.anuar.movieapp.domain.useCase.LoadDataUseCase
+import com.anuar.movieapp.domain.useCase.RefreshDataUseCase
+import com.anuar.movieapp.domain.useCase.UpdateFavouriteStatusUseCase
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -14,7 +16,9 @@ class MyViewModel @Inject constructor(
     private val getMovieCategoryListUseCase: GetMovieCategoryListUseCase,
     private val loadDataUseCase: LoadDataUseCase,
     private val refreshDataUseCase: RefreshDataUseCase,
-    private val networkState: NetworkLiveData
+    private val getFavouriteMovieListUseCase: GetFavouriteMovieListUseCase,
+    private val updateFavouriteStatusUseCase: UpdateFavouriteStatusUseCase,
+    private val networkState: NetworkLiveData,
 ) : ViewModel() {
 
     private val _isLoading = MutableLiveData<Boolean>()
@@ -22,24 +26,26 @@ class MyViewModel @Inject constructor(
 
     val movieCategoriesList = getMovieCategoryListUseCase()
 
+    val favouriteMoviesList = getFavouriteMovieListUseCase()
 
     init {
         loadDataUseCase()
     }
 
     fun refreshData() {
-        networkState.observeForever { isConnected ->
-            if (isConnected) {
-                viewModelScope.launch {
-                    try {
-                        _isLoading.value = true
-                        refreshDataUseCase()
-                    } finally {
-                        _isLoading.value = false
-                    }
-                }
+        viewModelScope.launch {
+            try {
+                _isLoading.value = true
+                refreshDataUseCase()
+            } finally {
+                _isLoading.value = false
             }
         }
+
+    }
+
+    fun updateFavouriteStatus(id: Int) {
+        viewModelScope.launch { updateFavouriteStatusUseCase(id) }
 
     }
 
