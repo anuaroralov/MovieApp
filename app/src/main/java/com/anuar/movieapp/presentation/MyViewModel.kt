@@ -18,7 +18,6 @@ class MyViewModel @Inject constructor(
     private val refreshDataUseCase: RefreshDataUseCase,
     private val getFavouriteMovieListUseCase: GetFavouriteMovieListUseCase,
     private val updateFavouriteStatusUseCase: UpdateFavouriteStatusUseCase,
-    private val networkState: NetworkLiveData,
 ) : ViewModel() {
 
     private val _isLoading = MutableLiveData<Boolean>()
@@ -49,8 +48,4 @@ class MyViewModel @Inject constructor(
 
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        networkState.removeObserver {}
-    }
 }
