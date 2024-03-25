@@ -1,11 +1,13 @@
 package com.anuar.movieapp.data.worker
 
 import android.content.Context
+import android.content.Intent
 import androidx.work.CoroutineWorker
 import androidx.work.ListenableWorker
 import androidx.work.PeriodicWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkerParameters
+import com.anuar.movieapp.data.MyBroadcastReceiver
 import com.anuar.movieapp.data.database.MovieCategoryDbModel
 import com.anuar.movieapp.data.database.MovieDbModel
 import com.anuar.movieapp.data.database.MoviesDao
@@ -60,6 +62,10 @@ class RefreshDataWorker(
 
             if (allMovieCategories.isNotEmpty() && allMoviesWithCategoryIds.isNotEmpty()) {
                 dao.updateDatabase(allMovieCategories, allMoviesWithCategoryIds)
+
+                val intent = Intent(applicationContext, MyBroadcastReceiver::class.java)
+                applicationContext.sendBroadcast(intent)
+
                 Result.success()
             } else {
                 Result.retry()
@@ -73,7 +79,7 @@ class RefreshDataWorker(
         const val NAME = "RefreshDataWorker"
 
         fun makeRequest(): PeriodicWorkRequest =
-            PeriodicWorkRequestBuilder<RefreshDataWorker>(2, TimeUnit.HOURS).build()
+            PeriodicWorkRequestBuilder<RefreshDataWorker>(15, TimeUnit.MINUTES).build()
     }
 
     class Factory @Inject constructor(

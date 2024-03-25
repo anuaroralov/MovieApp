@@ -36,11 +36,12 @@ class RepositoryImpl @Inject constructor(
     }
 
     override fun loadData() {
-        val workManager = WorkManager.getInstance(application)
-        workManager.enqueueUniquePeriodicWork(
+        val workRequest = RefreshDataWorker.makeRequest()
+
+        WorkManager.getInstance(application).enqueueUniquePeriodicWork(
             RefreshDataWorker.NAME,
             ExistingPeriodicWorkPolicy.UPDATE,
-            RefreshDataWorker.makeRequest()
+            workRequest
         )
     }
 
