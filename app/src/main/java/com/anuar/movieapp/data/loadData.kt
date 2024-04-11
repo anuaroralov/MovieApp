@@ -1,5 +1,9 @@
 package com.anuar.movieapp.data
 
+import android.app.Application
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import com.anuar.movieapp.data.database.MovieCategoryDbModel
 import com.anuar.movieapp.data.database.MovieDbModel
 import com.anuar.movieapp.data.database.MoviesDao
@@ -8,10 +12,16 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 
-suspend fun loadDataAndRefreshDatabase(dao: MoviesDao, apiService: ApiService): Boolean {
+suspend fun loadDataAndRefreshDatabase(application: Application, dao: MoviesDao, apiService: ApiService): Boolean {
+    if (!isInternetAvailable(application)) {
+        return false
+    }
+
     try {
-//        dao.clearMovieCategoriesTable()
-//        dao.clearMoviesTable()
+        val favouriteMovieIds = dao.getFavoriteMovieIds()
+        dao.clearMovieCategoriesTable()
+        dao.clearMoviesTable()
+
         val listIds = (1..50).toList()
         val allMovieCategories = mutableListOf<MovieCategoryDbModel>()
         val allMoviesWithCategoryIds = mutableListOf<MovieDbModel>()
@@ -37,7 +47,6 @@ suspend fun loadDataAndRefreshDatabase(dao: MoviesDao, apiService: ApiService): 
         }
 
         if (allMovieCategories.isNotEmpty() && allMoviesWithCategoryIds.isNotEmpty()) {
-            val favouriteMovieIds = dao.getFavoriteMovieIds()
             dao.updateDatabase(allMovieCategories, allMoviesWithCategoryIds)
             favouriteMovieIds.forEach { dao.updateFavouriteStatus(it) }
             return true
@@ -46,4 +55,14 @@ suspend fun loadDataAndRefreshDatabase(dao: MoviesDao, apiService: ApiService): 
 
     }
     return false
+}
+
+private fun isInternetAvailable(application: Application): Boolean {
+    val connectivityManager = application.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    val network = connectivityManager.activeNetwork
+    val networkCapabilities = connectivityManager.getNetworkCapabilities(network)
+    return networkCapabilities != null &&
+            (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+                    networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                    networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET))
 }
