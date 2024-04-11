@@ -42,7 +42,7 @@ class RepositoryImpl @Inject constructor(
     }
 
     override suspend fun refreshData(): Boolean = withContext(Dispatchers.IO) {
-        loadDataAndRefreshDatabase(dao, apiService)
+        loadDataAndRefreshDatabase(application,dao, apiService)
     }
 
     override fun getFavouriteMovieList(): LiveData<List<Movie>> {

@@ -1,5 +1,6 @@
 package com.anuar.movieapp.data.worker
 
+import android.app.Application
 import android.content.Context
 import android.content.Intent
 import androidx.work.CoroutineWorker
@@ -20,13 +21,14 @@ import javax.inject.Inject
 class RefreshDataWorker(
     context: Context,
     workerParameters: WorkerParameters,
+    private val application: Application,
     private val dao: MoviesDao,
     private val apiService: ApiService
 ) : CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
         try {
-            val result = loadDataAndRefreshDatabase(dao, apiService)
+            val result = loadDataAndRefreshDatabase(application,dao, apiService)
             if (result) {
                 val intent = Intent(applicationContext, MyBroadcastReceiver::class.java)
                 applicationContext.sendBroadcast(intent)
@@ -47,6 +49,7 @@ class RefreshDataWorker(
     }
 
     class Factory @Inject constructor(
+        private val application: Application,
         private val dao: MoviesDao,
         private val apiService: ApiService
     ):RefreshDataWorkerFactory {
@@ -54,7 +57,7 @@ class RefreshDataWorker(
             context: Context,
             workerParameters: WorkerParameters
         ): ListenableWorker {
-            return RefreshDataWorker(context,workerParameters,dao,apiService)
+            return RefreshDataWorker(context,workerParameters, application,dao,apiService)
         }
     }
 }
