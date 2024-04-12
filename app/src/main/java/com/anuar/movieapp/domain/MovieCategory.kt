@@ -8,4 +8,6 @@ data class MovieCategory(
     val id: Int,
     val categoryName: String?,
     var movies: List<Movie> = mutableListOf(),
-) : Parcelable
+) : Parcelable {
+
+}

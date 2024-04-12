@@ -73,7 +73,7 @@ class DetailFragment : Fragment() {
         favButton.setBackgroundResource(favDrawableRes)
 
         favButton.setOnClickListener {
-            viewModel.updateFavouriteStatus(movie.id)
+//            viewModel.updateFavouriteStatus(movie.id)
             val newFavDrawableRes = if (isLike) R.drawable.non_fav else R.drawable.fav
             favButton.setBackgroundResource(newFavDrawableRes)
         }

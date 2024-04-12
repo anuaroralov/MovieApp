@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -70,9 +71,17 @@ class HomeFragment : Fragment() {
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
         binding.recyclerView.adapter = adapter
 
-        viewModel.movieCategoriesList.observe(viewLifecycleOwner) {
+        viewModel.movieCategoryList.observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
+
+        viewModel.errorMessages.observe(viewLifecycleOwner) { errorMessage ->
+            if (errorMessage.isNotEmpty()) {
+                Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+                viewModel.clearErrorMessage()
+            }
+        }
+
 
     }
 

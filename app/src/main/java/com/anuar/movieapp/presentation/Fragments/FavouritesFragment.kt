@@ -59,9 +59,9 @@ class FavouritesFragment : Fragment() {
         binding.favouritesRecyclerView.layoutManager = GridLayoutManager(activity,4)
         binding.favouritesRecyclerView.adapter = adapter
 
-        viewModel.favouriteMoviesList.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
-        }
+//        viewModel.favouriteMoviesList.observe(viewLifecycleOwner) {
+//            adapter.submitList(it)
+//        }
 
     }
 

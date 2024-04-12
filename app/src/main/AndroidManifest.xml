@@ -27,13 +27,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <provider
-            android:authorities="androidx.work.WorkManagerInitializer"
-            android:name="androidx.startup.InitializationProvider"
-            tools:replace="android:authorities"
-            tools:node="remove">
-        </provider>
-        <receiver android:name=".data.MyBroadcastReceiver" />
     </application>
 
 

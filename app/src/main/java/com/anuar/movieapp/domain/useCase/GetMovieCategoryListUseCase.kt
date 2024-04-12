@@ -4,5 +4,5 @@ import com.anuar.movieapp.domain.Repository
 import javax.inject.Inject
 
 class GetMovieCategoryListUseCase @Inject constructor(private val repository: Repository) {
-    operator fun invoke() = repository.getMovieCategoryList()
+    suspend operator fun invoke() = repository.getMovieCategoryList()
 }
